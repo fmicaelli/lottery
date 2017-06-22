@@ -36,31 +36,24 @@ public class DrawStatisticService {
         return this.computeStatisticService.getStarDates(this.supplier.get());
     }
 
-    public Map<Integer, LocalDate> getBallLastDate() {
-        return this.computeStatisticService.getBallLastDate(this.supplier.get());
+    public Map<Pair<Integer, Integer>, Set<LocalDate>> getBallPairDates() {
+        return this.computeStatisticService.getBallPairDates(this.supplier.get());
     }
 
-    public Map<Integer, LocalDate> getStarLastDate() {
-        return this.computeStatisticService.getStarLastDate(this.supplier.get());
+    public Map<Pair<Integer, Integer>, Set<LocalDate>> getStarPairDates() {
+        return this.computeStatisticService.getStarPairDates(this.supplier.get());
     }
 
-    public Map<Pair<Integer, Integer>, Integer> getBallPairOccurrence() {
-        return this.computeStatisticService.getBallPairOccurrence(this.supplier.get());
+    public Map<Integer, Integer> getBallGap() {
+        return this.computeStatisticService.getBallGap(this.supplier.get());
     }
 
-    public Map<Pair<Integer, Integer>, Integer> getStarPairOccurrence() {
-        return this.computeStatisticService.getStarPairOccurrence(this.supplier.get());
+    public Map<Integer, Integer> getStarGap() {
+        return this.computeStatisticService.getStarGap(this.supplier.get());
     }
 
     public int getTotalDrawCount() {
         return this.computeStatisticService.getTotalDrawCount(this.supplier.get());
     }
 
-    public Map<Integer, Integer> getBallOccurrence() {
-        return this.computeStatisticService.getBallOccurrence(this.supplier.get());
-    }
-
-    public Map<Integer, Integer> getStarOccurrence() {
-        return this.computeStatisticService.getStarOccurrence(this.supplier.get());
-    }
 }

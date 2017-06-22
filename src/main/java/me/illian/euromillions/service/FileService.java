@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class FileService {
 
-    public File downloadAndExtract(final String url, final String filename) throws IOException {
+    File downloadAndExtract(final String url, final String filename) throws IOException {
         final File tempDirectory = Files.createTempDirectory("draw").toFile();
         final File temporaryFile = File.createTempFile("draw", ".zip", tempDirectory);
         FileUtils.copyURLToFile(new URL(url), temporaryFile);
@@ -37,7 +37,7 @@ public class FileService {
         }
     }
 
-    public Set<DrawInformation> extractData(final File file) throws IOException {
+    Set<DrawInformation> extractData(final File file) throws IOException {
         final CSVReader reader = new CSVReader(new FileReader(file), ';', '"', 1);
         final CsvToBean<Data> csvToBean = new CsvToBean<>();
 

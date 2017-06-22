@@ -1,4 +1,4 @@
-package me.illian.euromillions;
+package me.illian.euromillions.controller;
 
 import me.illian.euromillions.scheduler.UpdateDatabaseScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 @Controller
+@RequestMapping("/maintenance")
 public class MaintenanceController {
 
     private final UpdateDatabaseScheduler updateDatabaseScheduler;
