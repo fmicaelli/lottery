@@ -56,4 +56,24 @@ public class StatisticsController {
         return this.drawStatisticService.getTotalDrawCount();
     }
 
+    @RequestMapping("/ballDrawMean")
+    public Map<LocalDate, Double> getBallDrawMean() {
+        return this.drawStatisticService.getBallDrawMean();
+    }
+
+    @RequestMapping("/starDrawMean")
+    public Map<LocalDate, Double> getStarDrawMean() {
+        return this.drawStatisticService.getStarDrawMean();
+    }
+
+    @RequestMapping("/ballDrawsMean")
+    public Double ballDrawsMean() {
+        return this.drawStatisticService.getBallDrawsMean();
+    }
+
+    @RequestMapping("/starDrawsMean")
+    public Double starDrawsMean() {
+        return this.drawStatisticService.getStarDrawsMean();
+    }
+
 }

@@ -138,6 +138,35 @@ public class ComputeStatisticServiceTest {
         assertThat(count).isEqualTo(2);
     }
 
+    @Test
+    public void getBallDrawMeanTest() {
+        final Set<DrawInformation> drawInformationSet = createDrawInformation();
+        final Map<LocalDate, Double> ballMean = this.computeStatisticService.getBallDrawMean(drawInformationSet);
+        final Map<LocalDate, Double> starMean = this.computeStatisticService.getStarDrawMean(drawInformationSet);
+        assertThat(ballMean)
+                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2);
+
+        assertThat(starMean)
+                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2);
+
+        assertThat(ballMean)
+                .containsEntry(DRAW_DATE_1, 3.)
+                .containsEntry(DRAW_DATE_2, 6.);
+
+        assertThat(starMean)
+                .containsEntry(DRAW_DATE_1, 1.5)
+                .containsEntry(DRAW_DATE_2, 2.5);
+    }
+
+    @Test
+    public void getBallDrawsMean() {
+        final Set<DrawInformation> drawInformationSet = createDrawInformation();
+        final Double ballMean = this.computeStatisticService.getBallDrawsMean(drawInformationSet);
+        final Double starMean = this.computeStatisticService.getStarDrawsMean(drawInformationSet);
+        assertThat(ballMean).isEqualTo(4.5);
+        assertThat(starMean).isEqualTo(2.0);
+    }
+
     private static Set<DrawInformation> createDrawInformation() {
         final Set<DrawInformation> drawInformationSet = new HashSet<>();
         drawInformationSet.add(createDrawInformation(

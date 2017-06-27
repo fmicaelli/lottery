@@ -56,4 +56,19 @@ public class DrawStatisticService {
         return this.computeStatisticService.getTotalDrawCount(this.supplier.get());
     }
 
+    public Map<LocalDate, Double> getBallDrawMean() {
+        return this.computeStatisticService.getBallDrawMean(this.supplier.get());
+    }
+
+    public Map<LocalDate, Double> getStarDrawMean() {
+        return this.computeStatisticService.getStarDrawMean(this.supplier.get());
+    }
+
+    public Double getBallDrawsMean() {
+        return this.computeStatisticService.getBallDrawsMean(this.supplier.get());
+    }
+
+    public Double getStarDrawsMean() {
+        return this.computeStatisticService.getStarDrawsMean(this.supplier.get());
+    }
 }

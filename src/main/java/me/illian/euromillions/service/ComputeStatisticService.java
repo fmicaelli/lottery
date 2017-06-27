@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import me.illian.euromillions.model.DrawInformation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -100,6 +101,48 @@ public class ComputeStatisticService {
 
     public int getTotalDrawCount(final Set<DrawInformation> information) {
         return information.size();
+    }
+
+    public Map<LocalDate, Double> getBallDrawMean(final Set<DrawInformation> information) {
+        final Map<LocalDate, Double> result = new HashMap<>();
+        information.forEach(
+                drawInformation -> {
+                    final DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
+                    Arrays.stream(drawInformation.getDraw().getBalls()).forEach(
+                            descriptiveStatistics::addValue
+                    );
+                    result.put(drawInformation.getDrawDate(), descriptiveStatistics.getMean());
+                }
+        );
+        return result;
+    }
+
+    public Map<LocalDate, Double> getStarDrawMean(final Set<DrawInformation> information) {
+        final Map<LocalDate, Double> result = new HashMap<>();
+        information.forEach(
+                drawInformation -> {
+                    final DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
+                    Arrays.stream(drawInformation.getDraw().getStars()).forEach(
+                            descriptiveStatistics::addValue
+                    );
+                    result.put(drawInformation.getDrawDate(), descriptiveStatistics.getMean());
+                }
+        );
+        return result;
+    }
+
+    public Double getBallDrawsMean(final Set<DrawInformation> information) {
+        return getDrawsMean(getBallDrawMean(information).values());
+    }
+
+    public Double getStarDrawsMean(final Set<DrawInformation> information) {
+        return getDrawsMean(getStarDrawMean(information).values());
+    }
+
+    private static Double getDrawsMean(final Collection<Double> means) {
+        final DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
+        means.forEach(descriptiveStatistics::addValue);
+        return descriptiveStatistics.getMean();
     }
 }
 
