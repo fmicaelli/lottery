@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import me.illian.euromillions.model.Draw;
 import me.illian.euromillions.model.DrawInformation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -143,6 +144,34 @@ public class ComputeStatisticService {
         final DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
         means.forEach(descriptiveStatistics::addValue);
         return descriptiveStatistics.getMean();
+    }
+
+    public Map<Integer, Double> getBallPositionMean(final Set<DrawInformation> information) {
+        return getPositionMean(information.stream()
+                .map(DrawInformation::getDraw)
+                .map(Draw::getBalls)
+                .collect(Collectors.toList()));
+    }
+
+    public Map<Integer, Double> getStarPositionMean(final Set<DrawInformation> information) {
+        return getPositionMean(information.stream()
+                .map(DrawInformation::getDraw)
+                .map(Draw::getStars)
+                .collect(Collectors.toList()));
+    }
+
+    private static Map<Integer, Double> getPositionMean(final List<int[]> draws) {
+        assert(!draws.isEmpty());
+        final Map<Integer, Double> result = new HashMap<>();
+        for (int i = 0; i < draws.get(0).length; ++i) {
+            // Fuck java
+            final int position = i;
+            final DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
+            draws.stream().map(draw -> draw[position])
+                    .forEach(descriptiveStatistics::addValue);
+            result.put(i + 1, descriptiveStatistics.getMean());
+        }
+        return result;
     }
 }
 

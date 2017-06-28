@@ -71,4 +71,12 @@ public class DrawStatisticService {
     public Double getStarDrawsMean() {
         return this.computeStatisticService.getStarDrawsMean(this.supplier.get());
     }
+
+    public Map<Integer, Double> getBallPositionMean() {
+        return this.computeStatisticService.getBallPositionMean(this.supplier.get());
+    }
+
+    public Map<Integer, Double> getStarPositionMean() {
+        return this.computeStatisticService.getStarPositionMean(this.supplier.get());
+    }
 }

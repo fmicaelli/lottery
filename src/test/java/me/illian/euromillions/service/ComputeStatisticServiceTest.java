@@ -35,10 +35,8 @@ public class ComputeStatisticServiceTest {
         final Set<DrawInformation> drawInformationSet = createDrawInformation();
         final Map<Integer, Set<LocalDate>> ballDates = this.computeStatisticService.getBallDates(drawInformationSet);
         final Map<Integer, Set<LocalDate>> starDates = this.computeStatisticService.getStarDates(drawInformationSet);
-        assertThat(ballDates).containsOnlyKeys(1, 2, 3, 4, 5, 6, 7, 8);
-        assertThat(starDates).containsOnlyKeys(1, 2, 3);
-
         assertThat(ballDates)
+                .containsOnlyKeys(1, 2, 3, 4, 5, 6, 7, 8)
                 .containsEntry(1, Sets.newHashSet(DRAW_DATE_1))
                 .containsEntry(2, Sets.newHashSet(DRAW_DATE_1))
                 .containsEntry(3, Sets.newHashSet(DRAW_DATE_1))
@@ -48,7 +46,7 @@ public class ComputeStatisticServiceTest {
                 .containsEntry(7, Sets.newHashSet(DRAW_DATE_2))
                 .containsEntry(8, Sets.newHashSet(DRAW_DATE_2));
 
-        assertThat(starDates)
+        assertThat(starDates).containsOnlyKeys(1, 2, 3)
                 .containsEntry(1, Sets.newHashSet(DRAW_DATE_1))
                 .containsEntry(2, Sets.newHashSet(DRAW_DATE_1, DRAW_DATE_2))
                 .containsEntry(3, Sets.newHashSet(DRAW_DATE_2));
@@ -97,6 +95,7 @@ public class ComputeStatisticServiceTest {
                 .containsEntry(new ImmutablePair<>(6, 8), Sets.newHashSet(DRAW_DATE_2))
 
                 .containsEntry(new ImmutablePair<>(7, 8), Sets.newHashSet(DRAW_DATE_2));
+
         assertThat(starPairDates)
                 .hasSize(3)
                 .containsEntry(new ImmutablePair<>(1, 2), Sets.newHashSet(DRAW_DATE_1))
@@ -111,11 +110,7 @@ public class ComputeStatisticServiceTest {
         final Map<Integer, Integer> ballGap = this.computeStatisticService.getBallGap(drawInformationSet);
         final Map<Integer, Integer> starGap = this.computeStatisticService.getStarGap(drawInformationSet);
         assertThat(ballGap)
-                .containsOnlyKeys(1, 2, 3, 4, 5, 6, 7, 8);
-        assertThat(starGap)
-                .containsOnlyKeys(1, 2, 3);
-
-        assertThat(ballGap)
+                .containsOnlyKeys(1, 2, 3, 4, 5, 6, 7, 8)
                 .containsEntry(1, 1)
                 .containsEntry(2, 1)
                 .containsEntry(3, 1)
@@ -126,6 +121,7 @@ public class ComputeStatisticServiceTest {
                 .containsEntry(8, 0);
 
         assertThat(starGap)
+                .containsOnlyKeys(1, 2, 3)
                 .containsEntry(1, 1)
                 .containsEntry(2, 0)
                 .containsEntry(3, 0);
@@ -144,27 +140,44 @@ public class ComputeStatisticServiceTest {
         final Map<LocalDate, Double> ballMean = this.computeStatisticService.getBallDrawMean(drawInformationSet);
         final Map<LocalDate, Double> starMean = this.computeStatisticService.getStarDrawMean(drawInformationSet);
         assertThat(ballMean)
-                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2);
-
-        assertThat(starMean)
-                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2);
-
-        assertThat(ballMean)
+                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2)
                 .containsEntry(DRAW_DATE_1, 3.)
                 .containsEntry(DRAW_DATE_2, 6.);
 
         assertThat(starMean)
+                .containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2)
                 .containsEntry(DRAW_DATE_1, 1.5)
                 .containsEntry(DRAW_DATE_2, 2.5);
     }
 
     @Test
-    public void getBallDrawsMean() {
+    public void getBallDrawsMeanTest() {
         final Set<DrawInformation> drawInformationSet = createDrawInformation();
         final Double ballMean = this.computeStatisticService.getBallDrawsMean(drawInformationSet);
         final Double starMean = this.computeStatisticService.getStarDrawsMean(drawInformationSet);
         assertThat(ballMean).isEqualTo(4.5);
         assertThat(starMean).isEqualTo(2.0);
+    }
+
+    @Test
+    public void getPositionMeanTest() {
+        final Set<DrawInformation> drawInformationSet = createDrawInformation();
+        final Map<Integer, Double> ballPositionMean =
+                this.computeStatisticService.getBallPositionMean(drawInformationSet);
+        final Map<Integer, Double> starPositionMean =
+                this.computeStatisticService.getStarPositionMean(drawInformationSet);
+        assertThat(ballPositionMean)
+                .containsOnlyKeys(1, 2, 3, 4, 5)
+                .containsEntry(1, 2.5)
+                .containsEntry(2, 3.5)
+                .containsEntry(3, 4.5)
+                .containsEntry(4, 5.5)
+                .containsEntry(5, 6.5);
+
+        assertThat(starPositionMean)
+                .containsOnlyKeys(1, 2)
+                .containsEntry(1, 1.5)
+                .containsEntry(2, 2.5);
     }
 
     private static Set<DrawInformation> createDrawInformation() {

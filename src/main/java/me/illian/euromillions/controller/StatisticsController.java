@@ -67,13 +67,23 @@ public class StatisticsController {
     }
 
     @RequestMapping("/ballDrawsMean")
-    public Double ballDrawsMean() {
+    public Double getBallDrawsMean() {
         return this.drawStatisticService.getBallDrawsMean();
     }
 
     @RequestMapping("/starDrawsMean")
-    public Double starDrawsMean() {
+    public Double getStarDrawsMean() {
         return this.drawStatisticService.getStarDrawsMean();
+    }
+
+    @RequestMapping("/ballPositionMean")
+    public Map<Integer, Double>  getBallPositionMean() {
+        return this.drawStatisticService.getBallPositionMean();
+    }
+
+    @RequestMapping("/starPositionMean")
+    public Map<Integer, Double>  getStarPositionMean() {
+        return this.drawStatisticService.getStarPositionMean();
     }
 
 }
