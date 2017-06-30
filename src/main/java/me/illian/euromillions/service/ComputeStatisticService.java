@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class ComputeStatisticService {
 
+    public Map<LocalDate, Draw> getDraws(final Set<DrawInformation> information) {
+        return information.stream().collect(Collectors.toMap(DrawInformation::getDrawDate, DrawInformation::getDraw));
+    }
+
     public Map<Integer, Set<LocalDate>> getBallDates(final Set<DrawInformation> information) {
         final SetMultimap<Integer, LocalDate> result = HashMultimap.create();
 

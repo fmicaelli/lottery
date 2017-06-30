@@ -1,5 +1,6 @@
 package me.illian.euromillions.controller;
 
+import me.illian.euromillions.model.Draw;
 import me.illian.euromillions.service.DrawStatisticService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class StatisticsController {
     @Autowired
     public StatisticsController(final DrawStatisticService service) {
         this.drawStatisticService = service;
+    }
+
+    @RequestMapping("/draws")
+    public Map<LocalDate, Draw> getDraws() {
+        return this.drawStatisticService.getDraws();
     }
 
     @RequestMapping("/ballDates")

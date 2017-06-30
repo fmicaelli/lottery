@@ -1,6 +1,7 @@
 package me.illian.euromillions.service;
 
 import com.google.common.base.Suppliers;
+import me.illian.euromillions.model.Draw;
 import me.illian.euromillions.model.DrawInformation;
 import me.illian.euromillions.repository.DrawInformationRepository;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +27,10 @@ public class DrawStatisticService {
         this.supplier = Suppliers.memoizeWithExpiration(drawInformationRepository::getDrawInformation,
                 1, TimeUnit.HOURS);
         this.computeStatisticService = computeStatisticService;
+    }
+
+    public Map<LocalDate, Draw> getDraws() {
+        return this.computeStatisticService.getDraws(this.supplier.get());
     }
 
     public Map<Integer, Set<LocalDate>> getBallDates() {

@@ -31,6 +31,21 @@ public class ComputeStatisticServiceTest {
     private ComputeStatisticService computeStatisticService;
 
     @Test
+    public void getDrawsTest() {
+        final Set<DrawInformation> drawInformationSet = createDrawInformation();
+        final Map<LocalDate, Draw> draws = this.computeStatisticService.getDraws(drawInformationSet);
+        assertThat(draws).containsOnlyKeys(DRAW_DATE_1, DRAW_DATE_2)
+                .containsEntry(DRAW_DATE_1, Draw.builder()
+                        .balls(new int[]{1, 2, 3, 4, 5})
+                        .stars(new int[]{1, 2})
+                        .build())
+                .containsEntry(DRAW_DATE_2, Draw.builder()
+                        .balls(new int[]{4, 5, 6, 7, 8})
+                        .stars(new int[]{2, 3})
+                        .build());
+    }
+
+    @Test
     public void getDatesTest() {
         final Set<DrawInformation> drawInformationSet = createDrawInformation();
         final Map<Integer, Set<LocalDate>> ballDates = this.computeStatisticService.getBallDates(drawInformationSet);
