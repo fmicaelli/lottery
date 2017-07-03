@@ -6,10 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = {JooqAutoConfiguration.class})
 @Import(JooqConfiguration.class)
 @PropertySource("classpath:file.properties")
+@EnableScheduling
+@EnableAsync
 public class EuromillionsApplication {
 
     public static void main(String[] args) {

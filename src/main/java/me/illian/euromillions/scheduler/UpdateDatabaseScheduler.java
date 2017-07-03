@@ -30,7 +30,7 @@ public class UpdateDatabaseScheduler {
         this.drawInformationRepository = drawInformationRepository;
     }
 
-    @Scheduled(cron = "0 0 23 * * TUE,FRI")
+    @Scheduled(cron = "0 0 3 * * WED,SAT")
     public void execute() throws IOException {
         final Set<DrawInformation> drawInformationList = this.getDrawsService.getDraws(this.url, this.filename);
         this.drawInformationRepository.insertDraw(drawInformationList);
