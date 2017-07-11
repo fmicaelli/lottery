@@ -165,7 +165,7 @@ public class ComputeStatisticService {
     }
 
     private static Map<Integer, Double> getPositionMean(final List<int[]> draws) {
-        assert(!draws.isEmpty());
+        assert (!draws.isEmpty());
         final Map<Integer, Double> result = new HashMap<>();
         for (int i = 0; i < draws.get(0).length; ++i) {
             // Fuck java
@@ -176,6 +176,65 @@ public class ComputeStatisticService {
             result.put(i + 1, descriptiveStatistics.getMean());
         }
         return result;
+    }
+
+    public Map<String, List<Integer>> getBestDraw(final Set<DrawInformation> information) {
+        final Map<String, List<Integer>> result = new HashMap<>();
+        final List<Integer> ballResult = new ArrayList<>();
+
+        // Get the ball with the greatest occurrence
+        final Map<Integer, Integer> ballOccurrence = getBallDates(information).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().size()));
+        final Integer ball1 = Collections.max(ballOccurrence.entrySet(), Map.Entry.comparingByValue()).getKey();
+        ballResult.add(ball1);
+
+        // Get the Pair containing the 1st ball with the greatest occurrence, and get the other value
+        final Map<Pair<Integer, Integer>, Set<LocalDate>> dates = getBallPairDates(information);
+        final Map<Pair<Integer, Integer>, Integer> pairOccurrence = dates.entrySet().stream()
+                .filter(entrySet -> pairContains(entrySet.getKey(), ball1))
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().size()));
+        final Pair<Integer, Integer> pairMaxOccurrence =
+                Collections.max(pairOccurrence.entrySet(), Map.Entry.comparingByValue()).getKey();
+        ballResult.add(getOtherValue(pairMaxOccurrence, ball1));
+
+        // Get the ball with the greatest gap
+        ballResult.add(Collections.max(getBallGap(information).entrySet(), Map.Entry.comparingByValue()).getKey());
+
+        // Get the ball with the least occurrence
+        ballResult.add(Collections.min(ballOccurrence.entrySet(), Map.Entry.comparingByValue()).getKey());
+
+        // Choose the last ball to make the draw equal to the total mean of draw
+        // Computation: ((Total size of ball draw) * mean) - sum of other ball
+        // In this case : (5 * mean) - (a + b + c + d)
+        final int mean = getBallDrawsMean(information).intValue();
+        ballResult.add(((ballResult.size() + 1) * mean) - ballResult.stream().mapToInt(Integer::intValue).sum());
+
+        final List<Integer> starResult = new ArrayList<>();
+
+        // Get the star with the greatest occurrence
+        final Map<Integer, Integer> starOccurrence = getStarDates(information).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().size()));
+        starResult.add(Collections.max(starOccurrence.entrySet(), Map.Entry.comparingByValue()).getKey());
+
+        // Get the star with the greatest gap
+        starResult.add(Collections.max(getStarGap(information).entrySet(), Map.Entry.comparingByValue()).getKey());
+
+
+        result.put("balls", ballResult);
+        result.put("stars", starResult);
+        return result;
+    }
+
+    private static <T> boolean pairContains(final Pair<T, T> pair, T value) {
+        return pair.getLeft().equals(value) || pair.getRight().equals(value);
+    }
+
+    private static <T> T getOtherValue(final Pair<T, T> pair, T value) {
+        assert(pairContains(pair, value));
+        return pair.getLeft() == value ? pair.getRight() : pair.getLeft();
     }
 }
 
