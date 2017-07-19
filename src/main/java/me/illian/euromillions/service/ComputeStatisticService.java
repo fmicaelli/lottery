@@ -208,8 +208,8 @@ public class ComputeStatisticService {
         // Choose the last ball to make the draw equal to the total mean of draw
         // Computation: ((Total size of ball draw) * mean) - sum of other ball
         // In this case : (5 * mean) - (a + b + c + d)
-        final int mean = getBallDrawsMean(information).intValue();
-        ballResult.add(((ballResult.size() + 1) * mean) - ballResult.stream().mapToInt(Integer::intValue).sum());
+        final Double mean = getBallDrawsMean(information);
+        ballResult.add((int) (Math.round((ballResult.size() + 1) * mean)) - ballResult.stream().mapToInt(Integer::intValue).sum());
 
         final List<Integer> starResult = new ArrayList<>();
 
@@ -233,7 +233,7 @@ public class ComputeStatisticService {
     }
 
     private static <T> T getOtherValue(final Pair<T, T> pair, T value) {
-        assert(pairContains(pair, value));
+        assert (pairContains(pair, value));
         return pair.getLeft() == value ? pair.getRight() : pair.getLeft();
     }
 }
